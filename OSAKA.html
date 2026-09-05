@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 福岡旅遊</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        :root {
+            --red: #d32f2f;
+            --green: #2e7d32;
+            --text-black: #111111;
+            --border-black: #111111;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            line-height: 1.8; 
+            color: var(--text-black); 
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            background-color: #ffffff;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 封面區塊 */
+        .hero {
+            height: 100vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                              url('https://img.vocus.cc/Ifa-jopbxzxNfFo8Haf30O4ct_q_UqAr8rgJqEWibYc/w:740/f:webp/plain/https://images.vocus.cc/30d0c00e-d64f-477b-bf61-9c7fdde924ca.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        @keyframes floatUpFade {
+            0% { 
+                opacity: 0; 
+                transform: translateY(28px); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .hero h1 { 
+            font-size: 3.4rem; 
+            margin: 0; 
+            font-weight: 800; 
+            letter-spacing: 5px; 
+            animation: floatUpFade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            text-shadow: 0 4px 16px rgba(0,0,0,0.6);
+        }
+
+        .hero p { 
+            font-size: 1.25rem; 
+            font-weight: 700; 
+            margin-top: 14px; 
+            letter-spacing: 2.5px; 
+            animation: floatUpFade 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+        }
+
+        /* 導航列 */
+        .nav-scroller {
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            border-bottom: 2px solid var(--border-black);
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding: 8px 10px;
+        }
+
+        .nav-item {
+            padding: 8px 18px;
+            font-weight: 800;
+            color: var(--text-black);
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: transparent;
+            font-size: 0.95rem;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            border-radius: 6px;
+            margin: 0 3px;
+        }
+
+        .nav-item.active { 
+            color: #ffffff; 
+            background: var(--text-black);
+            border-color: var(--text-black);
+        }
+
+        .container { max-width: 800px; margin: 30px auto; padding: 0 16px; min-height: 500px; }
+        
+        .day-content { 
+            display: none !important; 
+        }
+        
+        .day-content.active { 
+            display: block !important; 
+            animation: floatUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        .day-header {
+            margin-bottom: 22px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-black);
+        }
+        .day-title { font-size: 1.55rem; font-weight: 800; color: var(--text-black); margin: 0; }
+        .day-subtitle { font-size: 0.92rem; color: var(--red); font-weight: 800; margin-top: 4px; }
+
+        .spot-card {
+            background: transparent;
+            border-radius: 12px;
+            border: 1px solid var(--border-black);
+            padding: 22px;
+            margin-bottom: 24px;
+        }
+
+        .spot-tag {
+            font-size: 0.75rem;
+            color: var(--text-black);
+            background: transparent;
+            border: 1px solid var(--border-black);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        .spot-title { font-size: 1.35rem; margin: 0 0 12px 0; font-weight: 800; color: var(--text-black); }
+        
+        .meal-info {
+            background: transparent;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            margin-top: 14px;
+            border: 1px solid var(--border-black);
+            border-left: 4px solid var(--red);
+            color: var(--text-black);
+        }
+
+        /* 航班資訊卡 */
+        .info-card {
+            background: transparent;
+            border: 1px solid var(--border-black);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .flight-header { display: flex; align-items: center; margin-bottom: 15px; color: #333; font-weight: 800; }
+        .flight-header .dot { width: 8px; height: 8px; background: #4285f4; border-radius: 50%; margin-right: 10px; }
+        .flight-date { font-size: 1.1rem; color: #333; margin-bottom: 10px; font-weight: 800; }
+        .flight-no { display: flex; align-items: center; font-size: 0.95rem; font-weight: 800; margin-bottom: 10px; }
+        .flight-no img { width: 18px; height: 18px; margin-right: 8px; }
+        .flight-main { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; }
+        .time { font-size: 1.8rem; font-weight: 800; color: #000; }
+        .duration { color: #555; font-size: 0.8rem; position: relative; flex-grow: 1; text-align: center; margin: 0 15px; font-weight: 700; }
+        .duration::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #e0e0e0; z-index: 1; }
+        .duration span { background: #fff; padding: 0 8px; position: relative; z-index: 2; }
+        
+        .hotel-header { color: #d32f2f; font-weight: 800; margin-bottom: 8px; font-size: 1.1rem; }
+        
+        .hotel-photo {
+            width: 100%;
+            height: 240px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 14px 0 16px 0;
+            border: 1px solid var(--border-black);
+        }
+        .hotel-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .btn-hotel-nav {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            color: var(--text-black);
+            background: transparent;
+            border: 1px solid var(--border-black);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 800;
+            transition: all 0.2s ease;
+        }
+        .btn-hotel-nav:hover {
+            background: var(--text-black);
+            color: #ffffff;
+        }
+        .btn-hotel-nav:hover .map-icon {
+            fill: #ffffff;
+        }
+
+        /* 導航按鈕 */
+        .btn-map {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            margin-right: 6px;
+            font-size: 0.82rem;
+            color: var(--text-black);
+            background: transparent;
+            border: 1px solid var(--border-black);
+            padding: 5px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 800;
+            transition: all 0.2s ease;
+        }
+        .btn-map:hover {
+            background: var(--text-black);
+            color: #ffffff;
+        }
+        .btn-map:hover .map-icon {
+            fill: #ffffff;
+        }
+        .btn-map:active {
+            transform: scale(0.96);
+        }
+        .map-icon {
+            width: 13px;
+            height: 13px;
+            fill: var(--red);
+            transition: fill 0.2s ease;
+        }
+
+        .transit-row { display: flex; align-items: flex-start; position: relative; padding: 12px 0; }
+        .transit-icon { width: 30px; height: 30px; color: white; border-radius: 50%; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-right: 14px; z-index: 2; flex-shrink: 0; }
+        .transit-icon.kuko { background: #e65100; border: 2px solid #fff; box-shadow: 0 0 0 1px #e65100; }
+        .transit-icon.nana { background: #00897b; border: 2px solid #fff; box-shadow: 0 0 0 1px #00897b; }
+        .transit-icon.nishitetsu { background: #1565c0; border: 2px solid #fff; box-shadow: 0 0 0 1px #1565c0; }
+        .transit-icon.bus { background: #c2185b; border: 2px solid #fff; box-shadow: 0 0 0 1px #c2185b; }
+        .transit-line-kuko { width: 4px; height: 50px; background: #e65100; position: absolute; left: 13px; top: 32px; z-index: 1; }
+        .transit-line-nana { width: 4px; height: 50px; background: #00897b; position: absolute; left: 13px; top: 32px; z-index: 1; }
+        .transit-line-nishitetsu { width: 4px; height: 50px; background: #1565c0; position: absolute; left: 13px; top: 32px; z-index: 1; }
+        .transit-line-bus { width: 4px; height: 50px; background: #c2185b; position: absolute; left: 13px; top: 32px; z-index: 1; }
+        .station-name { font-weight: 800; font-size: 0.98rem; color: var(--text-black); }
+        .station-desc { font-size: 0.83rem; color: #555555; margin-top: 2px; font-weight: 600; }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 22px;
+            border-left: 2px solid var(--border-black);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 7px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--red);
+        }
+        .timeline-time { font-size: 0.88rem; font-weight: 800; color: var(--text-black); }
+        .timeline-text { font-size: 0.95rem; color: var(--text-black); margin-top: 3px; }
+
+        .accordion-item {
+            border: 1px solid var(--border-black);
+            border-radius: 8px !important;
+            margin-top: 14px;
+            overflow: hidden;
+            background: transparent;
+        }
+        .accordion-button {
+            background-color: transparent;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-black);
+            padding: 12px 16px;
+            box-shadow: none !important;
+        }
+        .accordion-button:not(.collapsed) {
+            color: #ffffff;
+            background-color: var(--text-black);
+        }
+        .accordion-button::after {
+            filter: grayscale(1);
+        }
+        .accordion-button:not(.collapsed)::after {
+            filter: invert(1);
+        }
+        .accordion-body {
+            padding: 16px;
+            font-size: 0.9rem;
+            color: var(--text-black);
+            background-color: transparent;
+        }
+        .alt-food-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border-black);
+        }
+        .alt-food-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #777777;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-top: 1px solid var(--border-black);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.05rem; }
+            .nav-item { padding: 8px 13px; font-size: 0.88rem; }
+            .container { padding: 0 16px; margin: 20px auto; }
+            .spot-card { padding: 16px; }
+            .time { font-size: 1.5rem; }
+            .hotel-photo { height: 190px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>Fukuoka</h1>
+    <p>9/6 - 9/11 福岡・九州自由行</p>
+</div>
+
+<div class="nav-scroller" id="navBar">
+    <button class="nav-item active" onclick="switchDay(1)">首頁</button>
+    <button class="nav-item" onclick="switchDay(2)">行程需知</button>
+    <button class="nav-item" onclick="switchDay(3)">D1</button>
+    <button class="nav-item" onclick="switchDay(4)">D2</button>
+    <button class="nav-item" onclick="switchDay(5)">D3</button>
+    <button class="nav-item" onclick="switchDay(6)">D4</button>
+    <button class="nav-item" onclick="switchDay(7)">D5</button>
+    <button class="nav-item" onclick="switchDay(8)">D6</button>
+</div>
+
+<div class="container">
+    
+    <!-- 首頁總覽 -->
+    <div id="day1" class="day-content active">
+        <h2 class="spot-title">2026 福岡旅遊</h2>
+        
+        <div class="spot-card">
+            <span class="spot-tag">TRIP OVERVIEW</span>
+            <p style="margin-top: 6px;"><strong>九州自由行</strong>・高千穗峽神話秘境、由布院溫泉散策、太宰府天滿宮參拜、天神地下街商圈與博多站購物巡禮。</p>
+            <div class="meal-info">
+                <strong>行程總覽：</strong><br>
+                • <strong>D1 (9/6)：</strong>抵達福岡 ➔ 飯店寄放行李 ➔ 櫛田神社 ➔ FUK COFFEE ➔ 博多運河城 ➔ 20:00 一蘭總店表演 ➔ 晚餐：博多鶏soba 建 TATERU<br>
+                • <strong>D2 (9/7)：</strong>阿蘇高千穗一日遊 ➔ 傍晚返回博多（可選博多逛街晚餐或回天神晚餐）<br>
+                • <strong>D3 (9/8)：</strong>天神商圈室內行程 ➔ 午餐：Menya Kanetora ➔ 傍晚博多站重點採購 ➔ 晚餐：Nikuichi 燒肉<br>
+                • <strong>D4 (9/9)：</strong>由布院・別府一日遊 ➔ 傍晚返回博多（可選博多晚餐或回天神晚餐）<br>
+                • <strong>D5 (9/10)：</strong>太宰府參拜 ➔ 午餐：MIDLE. ➔ 下午博多站購物 ➔ 晚間自由安排（天神或博多）<br>
+                • <strong>D6 (9/11)：</strong>飯店退房 ➔ 前往機場搭機返台（12:20 起飛）
+            </div>
+        </div>
+
+        <!-- 推薦美食清單 -->
+        <div class="spot-card">
+            <span class="spot-tag">GOURMET LIST</span>
+            <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 12px;">推薦美食清單</h3>
+            
+            <div class="accordion" id="accGourmetMaster">
+                <!-- 鰻魚飯 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingGourmet1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGourmet1">
+                            鰻魚飯
+                        </button>
+                    </h2>
+                    <div id="collapseGourmet1" class="accordion-collapse collapse" data-bs-parent="#accGourmetMaster">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>うな善（博多）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=うな善+福岡市博多区博多駅前3-17-18" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>うなぎ処 福（天神/春吉）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=うなぎ処+福+福岡市中央区春吉3-16-1" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>うなぎ四代目菊川 福岡中洲店（中洲）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=うなぎ四代目菊川+福岡中洲店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 燒鳥 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingGourmet3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGourmet3">
+                            燒鳥
+                        </button>
+                    </h2>
+                    <div id="collapseGourmet3" class="accordion-collapse collapse" data-bs-parent="#accGourmetMaster">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>焼鳥 とりら（天神/平尾）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=焼鳥+とりら+福岡市中央区平尾" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>焼鳥 鳥松（博多/住吉）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=焼鳥+鳥松+福岡市博多区住吉" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>やきとり 太郎（中洲）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=やきとり+太郎+福岡市博多区中洲" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>炭火焼鳥 翔（春吉）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=炭火焼鳥+翔+福岡市中央区春吉" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 燒肉 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingGourmet4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGourmet4">
+                            燒肉
+                        </button>
+                    </h2>
+                    <div id="collapseGourmet4" class="accordion-collapse collapse" data-bs-parent="#accGourmetMaster">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>焼肉 すどう 春吉（春吉）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=焼肉すどう+春吉+福岡市中央区春吉3-3-9" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>九州焼肉 山田（博多/美野島）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=九州焼肉+山田+福岡市博多区美野島" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>大衆焼肉 炭火やきにく 肉家（天神/大名）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=大衆焼肉+肉家+福岡市中央区大名" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>炭火焼肉 龍（中洲）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=炭火焼肉+龍+福岡市博多区中洲" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 壽司 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingGourmet5">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGourmet5">
+                            壽司
+                        </button>
+                    </h2>
+                    <div id="collapseGourmet5" class="accordion-collapse collapse" data-bs-parent="#accGourmetMaster">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>鮨 桃の木（博多）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鮨+桃の木+福岡市博多区博多駅東" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>鮨 青木（天神/舞鶴）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鮨+青木+福岡市中央区舞鶴" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>鮨 風堂（中洲）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鮨+風堂+福岡市博多区中洲" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>すし割烹 鮨隆（春吉）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=すし割烹+鮨隆+福岡市中央区春吉" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 海鮮刺身 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingGourmet6">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGourmet6">
+                            海鮮刺身
+                        </button>
+                    </h2>
+                    <div id="collapseGourmet6" class="accordion-collapse collapse" data-bs-parent="#accGourmetMaster">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>鮨 そえ島（博多）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鮨+そえ島+福岡市博多区博多駅前" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>海鮮食堂 小林（天神/大名）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=海鮮食堂+小林+福岡市中央区大名" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>鮮魚処 満月（中洲）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鮮魚処+満月+福岡市博多区中洲" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>きはる（春吉）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=きはる+福岡市中央区春吉3-21-28" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 拉麵 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingGourmet7">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGourmet7">
+                            拉麵
+                        </button>
+                    </h2>
+                    <div id="collapseGourmet7" class="accordion-collapse collapse" data-bs-parent="#accGourmetMaster">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>博多元気一杯!!（博多/下呉服町）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=博多元気一杯!!+福岡市博多区下呉服町" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>一蘭 本社総本店（中洲）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=一蘭+本社総本店+福岡市博多区中洲5-3-2" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>らーめん むさし（天神/舞鶴）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=らーめん+むさし+福岡市中央区舞鶴" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>八ちゃんラーメン 薬院本店（薬院）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=八ちゃんラーメン+薬院本店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 甜品 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingGourmet8">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGourmet8">
+                            甜品
+                        </button>
+                    </h2>
+                    <div id="collapseGourmet8" class="accordion-collapse collapse" data-bs-parent="#accGourmetMaster">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>万 yorozu（赤坂/警固）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=万+yorozu+福岡市中央区警固2-2-14" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>抹茶カフェ さくら（博多/美野島）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=抹茶カフェ+さくら+福岡市博多区" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>甘味処 和（中洲/春吉）</strong><br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=甘味処+和+福岡市博多区中洲" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 行程需知 -->
+    <div id="day2" class="day-content">
+        <div class="flight-header"><div class="dot"></div> <strong>去程：台北 ➔ 福岡</strong></div>
+        <div class="flight-date">9 月 6 日 週日</div>
+        <div class="info-card">
+            <div class="flight-no"><img src="https://www.evaair.com/favicon.ico" alt="EVA Air"> BR106</div>
+            <div class="flight-main">
+                <div class="time">08:00</div>
+                <div class="duration"><span>2 小時 20 分</span></div>
+                <div class="time">11:20</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; font-weight: 700;">
+                <div>桃園國際機場 T2</div>
+                <div>福岡機場</div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="hotel-header">住宿資訊</div>
+            <div style="font-size: 1.2rem; font-weight: 800;">Best Western Plus 福岡天神南</div>
+            <div style="color: #555; font-size: 0.9rem; font-weight: 600;">9 月 6 日 － 9 月 11 日 (5 晚連住)</div>
+            <div style="font-size: 0.85rem; color: #111; margin-top: 4px;">福岡縣福岡市中央區春吉 3-13-19</div>
+            
+            <div class="hotel-photo">
+                <img src="https://res.klook.com/klook-hotel/image/upload/fl_lossy.progressive,w_1200,h_630,c_fill,q_85/travelapi/48000000/47010000/47007200/47007126/f75c58dd_z.jpg" alt="Best Western Plus 福岡天神南">
+            </div>
+
+            <a href="https://www.google.com/maps/search/?api=1&query=ベストウェスタンプラス福岡天神南" target="_blank" class="btn-hotel-nav">
+                <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                開啟 Google 地圖導航
+            </a>
+        </div>
+
+        <div class="flight-header"><div class="dot"></div> <strong>回程：福岡 ➔ 台北</strong></div>
+        <div class="flight-date">9 月 11 日 週五</div>
+        <div class="info-card">
+            <div class="flight-no"><img src="https://www.evaair.com/favicon.ico" alt="EVA Air"> BR105</div>
+            <div class="flight-main">
+                <div class="time">12:20</div>
+                <div class="duration"><span>2 小時 25 分</span></div>
+                <div class="time">13:45</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #666; font-weight: 700;">
+                <div>福岡機場</div>
+                <div>台灣桃園機場 T2</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Day 1 -->
+    <div id="day3" class="day-content">
+        <div class="day-header">
+            <h2 class="day-title">Day 1：抵達福岡・市區行程</h2>
+            <div class="day-subtitle">9 月 6 日 (日) ｜ 機場交通、櫛田神社、FUK COFFEE、運河城、一蘭表演、博多鶏soba 建</div>
+        </div>
+
+        <div class="info-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div class="hotel-header" style="color: var(--text-black); margin-bottom: 0;">機場前往飯店交通路線</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=Fukuoka+Airport&destination=ベストウェスタンプラス福岡天神南&travelmode=transit" target="_blank" class="btn-map">
+                    <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                    開啟路線導航
+                </a>
+            </div>
+
+            <div style="border: 1px solid var(--border-black); padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem; font-weight: 700;">
+                搭乘概況： 約 17 分鐘 ｜ 換乘 1 次 ｜ 費用 260 日圓
+            </div>
+            
+            <div class="transit-row">
+                <div class="transit-icon kuko">K13</div>
+                <div class="transit-line-kuko"></div>
+                <div class="transit-station">
+                    <div class="station-name">福岡機場站 [始發]</div>
+                    <div class="station-desc">搭乘 福岡地下鐵機場線 (往姪濱) ・ 約 5 分鐘 (2 站)</div>
+                </div>
+            </div>
+
+            <div class="transit-row">
+                <div class="transit-icon kuko">K11</div>
+                <div class="transit-station">
+                    <div class="station-name">博多站</div>
+                    <div class="station-desc">站內轉乘七隈線（依指標步行約 9 分鐘）</div>
+                </div>
+            </div>
+
+            <div class="transit-row">
+                <div class="transit-icon nana">N18</div>
+                <div class="transit-line-nana"></div>
+                <div class="transit-station">
+                    <div class="station-name">博多站 [始發]</div>
+                    <div class="station-desc">搭乘 福岡地下鐵七隈線 (往橋本) ・ 約 3 分鐘 (2 站)</div>
+                </div>
+            </div>
+
+            <div class="transit-row">
+                <div class="transit-icon nana">N16</div>
+                <div class="transit-station">
+                    <div class="station-name">天神南站</div>
+                    <div class="station-desc" style="color: var(--red); font-weight: bold;">出站步行至 Best Western Plus 飯店辦理入住 / 寄放行李</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spot-card">
+            <span class="spot-tag">AFTERNOON & NIGHT</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">中午 12:30 - 13:30</div>
+                <div class="timeline-text">
+                    <strong>飯店寄放行李</strong><br>
+                    抵達 Best Western Plus 福岡天神南辦理入住手續並先寄放行李。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">下午 13:45 - 14:30</div>
+                <div class="timeline-text">
+                    <strong>櫛田神社參拜</strong><br>
+                    博多的總鎮守，參拜社殿、觀賞常設展示的博多祇園山笠祭典「飾山笠」。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=櫛田神社+福岡市博多区上川端町1-41" target="_blank" class="btn-map">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        開啟地圖導航
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">下午 14:30 - 15:30 下午茶</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：FUK COFFEE (祇園店)</strong><br>
+                    從櫛田神社步行約 2 分鐘。招牌手工焦糖布丁與飛機拉花拿鐵。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=FUK+COFFEE+福岡市博多区祇園町6-22" target="_blank" class="btn-map">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        開啟 FUK COFFEE 導航
+                    </a>
+                </div>
+            </div>
+
+            <!-- D1 下午茶備案 -->
+            <div class="accordion" id="accD1Cafe">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD1Cafe">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD1Cafe">
+                            下午茶備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD1Cafe" class="accordion-collapse collapse" data-bs-parent="#accD1Cafe">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>鈴懸 本店（博多座前）</strong><br>
+                                提供草莓大福、抹茶聖代與和式甜點。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鈴懸+本店+福岡市博多区上川端町12-20" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>中洲ぜんざい（川端通商店街）</strong><br>
+                                現烤日式麻糬配熱紅豆湯。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=中洲ぜんざい+福岡市博多区上川端町3-15" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 20px;">
+                <div class="timeline-time">下午 15:40 - 19:30</div>
+                <div class="timeline-text">
+                    <strong>博多運河城購物與水舞秀</strong><br>
+                    運河複合商場，逛街採購，定時欣賞水舞投影。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=キャナルシティ博多" target="_blank" class="btn-map">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        開啟運河城導航
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">晚上 20:00</div>
+                <div class="timeline-text">
+                    <strong>一蘭 本社總本店（觀賞屋台陽台演出）</strong><br>
+                    沿河畔步行至中洲一蘭總本店，觀賞 20:00 陽台迎賓音樂表演。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=一蘭+本社総本店+福岡市博多区中洲5-3-2" target="_blank" class="btn-map">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        開啟一蘭總本店導航
+                    </a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">晚上 20:30 晚餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：博多鶏soba 建 TATERU（たてる）</strong><br>
+                    位於春吉/天神南（飯店步行約 3 分鐘）。極上泡沫雞白湯拉麵。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=博多鶏soba建+福岡市中央区春吉3-13-20" target="_blank" class="btn-map">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        開啟博多鶏soba 建導航
+                    </a>
+                </div>
+            </div>
+
+            <!-- D1 晚餐備案 -->
+            <div class="accordion" id="accD1Dinner">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD1Dinner">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD1Dinner">
+                            春吉・中洲周邊晚餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD1Dinner" class="accordion-collapse collapse" data-bs-parent="#accD1Dinner">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>炭火焼鳥 翔（春吉）</strong><br>
+                                距離飯店步行 2 分鐘，高品質炭火串燒居酒屋。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=炭火焼鳥+翔+福岡市中央区春吉" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>元祖博多めんたい重（西中洲）</strong><br>
+                                步行約 5 分鐘，福岡代表性昆布漬明太子盒飯。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=元祖博多めんたい重+福岡市中央区西中洲6-15" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>焼肉 すどう 春吉</strong><br>
+                                步行約 3 分鐘，春吉頂級黑毛和牛燒肉。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=焼肉すどう+春吉+福岡市中央区春吉3-3-9" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div id="day4" class="day-content">
+        <div class="day-header">
+            <h2 class="day-title">Day 2：阿蘇高千穗一日遊</h2>
+            <div class="day-subtitle">9 月 7 日 (一) ｜ 上色見熊野座神社・高千穗峽・天岩戶神社 ➔ 晚間兩種方案選擇</div>
+        </div>
+
+        <div class="info-card" style="margin-top: 0;">
+            <div style="font-weight: 800; color: var(--text-black); margin-bottom: 6px;">晨間出發交通接駁 (飯店 ➔ 集合地)</div>
+            <div style="font-size: 0.88rem; color: #111;">
+                • 07:02 從飯店步行約 8 分鐘至天神南站<br>
+                • 07:10 搭乘福岡地下鐵七隈線至博多站（¥210）<br>
+                • 07:14 抵達博多站，步行約 3 分鐘至筑紫口集合點
+            </div>
+            <a href="https://www.google.com/maps/search/?api=1&query=ローソン+オリエンタルホテル福岡博多ステーション" target="_blank" class="btn-map">
+                <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                開啟集合點導航
+            </a>
+        </div>
+
+        <div class="spot-card">
+            <span class="spot-tag">DAY TOUR</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">08:15 準時集合</div>
+                <div class="timeline-text">
+                    <strong>集合地點：</strong>羅森 福岡東方酒店（博多站筑紫口前）
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">11:10 (約 30-40 分鐘)</div>
+                <div class="timeline-text">
+                    <strong>上色見熊野座神社</strong><br>
+                    石燈籠參道與青苔森林，參拜穿戶岩。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=上色見熊野座神社+熊本県阿蘇郡高森町" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟地圖導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">12:40 (約 80-90 分鐘) 午餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：高千穗峽（自由活動 ＆ 千穗之家流水素麵）</strong><br>
+                    柱狀節理峽谷與真名井瀑布，品嚐元祖流水素麵。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=千穂の家+元祖そうめん流し+宮崎県西臼杵郡高千穂町" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟地圖導航</a>
+                </div>
+            </div>
+
+            <!-- D2 午餐備案 -->
+            <div class="accordion" id="accD2Lunch">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD2Lunch">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD2Lunch">
+                            高千穗午餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD2Lunch" class="accordion-collapse collapse" data-bs-parent="#accD2Lunch">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>初栄（高千穗牛燒肉料理）</strong><br>
+                                當地著名的高千穗牛炭火燒肉與牛排定食。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=初栄+宮崎県西臼杵郡高千穂町三田井107" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 20px;">
+                <div class="timeline-time">14:30 (約 60 分鐘)</div>
+                <div class="timeline-text">
+                    <strong>天岩戶神社 ＆ 天安河原</strong><br>
+                    參訪神話洞窟聖地與河灘祈願石塔。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=天岩戸神社+宮崎県西臼杵郡高千穂町" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟地圖導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">18:30</div>
+                <div class="timeline-text">返抵博多站筑紫口前下車解散。</div>
+            </div>
+        </div>
+
+        <!-- D2 晚間兩種方案 -->
+        <div class="spot-card">
+            <span class="spot-tag">EVENING CHOICES</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">方案一：留在博多站逛街＋晚餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：うな善（博多站前）</strong><br>
+                    博多站博多口步行約 5 分鐘，炭烤香氣四溢的道地鰻魚飯。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=うな善+福岡市博多区博多駅前3-17-18" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟うな善導航</a>
+                </div>
+            </div>
+
+            <!-- D2 方案一晚餐備案 -->
+            <div class="accordion" id="accD2HakataDinner">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD2HakataDinner">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD2HakataDinner">
+                            方案一（博多）周邊晚餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD2HakataDinner" class="accordion-collapse collapse" data-bs-parent="#accD2HakataDinner">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>焼鳥 鳥松（博多/住吉）</strong><br>
+                                在地炭火烤肉串與居酒屋料理。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=焼鳥+鳥松+福岡市博多区住吉" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>鮨 桃の木（博多）</strong><br>
+                                板前握壽司料理。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鮨+桃の木+福岡市博多区博多駅東" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 24px;">
+                <div class="timeline-time">方案二：搭地鐵回天神晚餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：焼鳥 とりら（天神/平尾）</strong><br>
+                    天神高評價炭火燒鳥料理。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=焼鳥+とりら+福岡市中央区平尾" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟とりら導航</a>
+                </div>
+            </div>
+
+            <!-- D2 方案二晚餐備案 -->
+            <div class="accordion" id="accD2TenjinDinner">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD2TenjinDinner">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD2TenjinDinner">
+                            方案二（天神）周邊晚餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD2TenjinDinner" class="accordion-collapse collapse" data-bs-parent="#accD2TenjinDinner">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>大名 NUMBER SHOT</strong><br>
+                                天神大名現代創作料理居酒屋。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=NUMBER+SHOT+福岡市中央区大名1-12-36" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>焼とりの八兵衛 ソラリアプラザ店</strong><br>
+                                天神 Solaria Plaza 6 樓老牌炭火串燒。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=焼とりの八兵衛+ソラリアプラザ店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div id="day5" class="day-content">
+        <div class="day-header">
+            <h2 class="day-title">Day 3：天神逛街與傍晚博多行程</h2>
+            <div class="day-subtitle">9 月 8 日 (二) ｜ 藍瓶咖啡 ➔ Full Full ➔ 三越 ➔ 午餐：麺や兼虎 ➔ 地下街 ➔ mina 天神 ➔ 傍晚博多採買 ➔ 晚餐：Nikuichi 燒肉</div>
+        </div>
+
+        <div class="spot-card">
+            <span class="spot-tag">DAYTIME：TENJIN ROUTE</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">08:30 - 10:00 早餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：Blue Bottle Coffee 福岡天神カフェ</strong><br>
+                    警固神社境內，提供單品手沖咖啡、熱壓鬆餅或三明治。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=ブルーボトルコーヒー+福岡天神カフェ" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟藍瓶導航</a>
+                    <a href="https://store.bluebottlecoffee.jp/pages/drinkmenu-cn" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>飲品菜單</a>
+                </div>
+            </div>
+
+            <!-- D3 早餐備案 -->
+            <div class="accordion" id="accD3B">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD3Breakfast">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD3Breakfast">
+                            天神早午餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD3Breakfast" class="accordion-collapse collapse" data-bs-parent="#accD3B">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>THE CITY BAKERY Tenjin（ソラリアプラザ B2F）</strong><br>
+                                地下街直通，招牌椒鹽可頌熱壓三明治與每日濃湯。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=THE+CITY+BAKERY+天神ソラリアプラザ" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>TOFFEE park（西中洲）</strong><br>
+                                西中洲水岸邊，特色豆乳拿鐵配豆腐甜甜圈。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=TOFFEE+park+福岡市中央区西中洲" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 20px;">
+                <div class="timeline-time">10:00 - 10:30 外帶點心</div>
+                <div class="timeline-text">
+                    <strong>THE FULL FULL HAKATA（天神店）</strong><br>
+                    步行約 3 分鐘，10 點開門購買剛出爐的脆皮明太子法棍。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=THE+FULL+FULL+HAKATA+福岡市中央区天神" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 Full Full 導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">10:30 - 11:30</div>
+                <div class="timeline-text">
+                    <strong>福岡三越 (Fukuoka Mitsukoshi)</strong><br>
+                    逛 B2 伴手禮甜點區，連通進入天神地下街。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=福岡三越" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟三越導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">11:30 - 14:00 午餐與逛街</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：麺や兼虎（天神）</strong><br>
+                    天神西通店或 PARCO 店，招牌濃厚魚介豚骨沾麵，Q彈極粗麵條。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=麺や兼虎+天神西通り店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟兼虎天神西通店導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=福岡PARCO" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 PARCO 導航</a>
+                </div>
+            </div>
+
+            <!-- D3 午餐備案 -->
+            <div class="accordion" id="accD3Lunch">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD3Lunch">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD3Lunch">
+                            天神午餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD3Lunch" class="accordion-collapse collapse" data-bs-parent="#accD3Lunch">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>極味や 福岡パルコ店（PARCO 本館 B1）</strong><br>
+                                鐵板小石現煎伊萬里和牛漢堡排。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=極味や+福岡パルコ店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>博多和牛まぶし 武蔵 天神店</strong><br>
+                                黑毛和牛蓋飯三吃，高湯茶泡飯十分鮮美。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=博多和牛まぶし+武蔵+天神店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>Shin Shin 拉麵（天神本店）</strong><br>
+                                福岡代表性極細麵豚骨拉麵。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Hakata+Ramen+Shin-Shin+Tenjin+Main+Store" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 20px;">
+                <div class="timeline-time">14:00 - 15:00</div>
+                <div class="timeline-text">
+                    <strong>天神地下街 ＆ TruffleBAKERY 白松露鹽可頌</strong><br>
+                    向北散步，順路外帶白松露鹽可頌作為點心。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=TruffleBAKERY+天神地下街店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟可頌導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">15:00 - 17:00</div>
+                <div class="timeline-text">
+                    <strong>ミーナ天神 (mina Tenjin)</strong><br>
+                    地下街北端直通，設有大型 GU（3F）、UNIQLO、LOFT 與 JINS。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=ミーナ天神" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 mina 天神導航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="spot-card">
+            <span class="spot-tag">EVENING：HAKATA ROUTE</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">17:15 - 17:30 交通轉場</div>
+                <div class="timeline-text">
+                    <strong>天神南站搭乘七隈線至博多站</strong><br>
+                    車程約 3 分鐘直達博多站。<br>
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=天神南駅&destination=博多駅&travelmode=transit" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟地鐵導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">17:30 - 18:30 精簡購物</div>
+                <div class="timeline-text">
+                    <strong>博多站共構商場採買</strong><br>
+                    重點逛博多阪急百貨與 JR 博多城。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=JR博多シティ" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 JR 博多城導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">18:45 起 晚餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：焼肉にくいち 博多店 (Nikuichi)</strong><br>
+                    博多站筑紫口步行約 5 分鐘，超高 CP 值特選黑毛和牛燒肉拼盤（需提早預訂）。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=焼肉にくいち+博多店+福岡市博多区博多駅南1-2-18" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 Nikuichi 導航</a>
+                </div>
+            </div>
+
+            <!-- D3 晚餐備案 -->
+            <div class="accordion" id="accD3HakataDinner">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD3HakataDinner">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD3HakataDinner">
+                            博多晚餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD3HakataDinner" class="accordion-collapse collapse" data-bs-parent="#accD3HakataDinner">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>麺や ISHII（博多駅前）</strong><br>
+                                清爽沾麵與特製醬油拉麵。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=麺や+ISHII+福岡市博多区博多駅前" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>博多かわ屋 祇園店</strong><br>
+                                慢火炙烤酥脆雞皮串。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=博多かわ屋+祇園店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div id="day6" class="day-content">
+        <div class="day-header">
+            <h2 class="day-title">Day 4：由布院・別府地獄一日遊</h2>
+            <div class="day-subtitle">9 月 9 日 (三) ｜ KKday 一日遊行程 ➔ 晚間兩種方案選擇</div>
+        </div>
+
+        <div class="spot-card">
+            <span class="spot-tag">KKDAY TOUR</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">08:20 集合</div>
+                <div class="timeline-text">
+                    <strong>集合地點：</strong>博多站筑紫口前
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">09:40 - 10:20</div>
+                <div class="timeline-text">
+                    <strong>如意輪寺（約 40 分鐘）</strong><br>
+                    知名青蛙寺，寺內裝飾數千個風鈴。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=如意輪寺+福岡県小郡市横隈" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟地圖導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">11:20 - 11:35</div>
+                <div class="timeline-text">
+                    <strong>由布岳（約 15 分鐘，車窗觀光）</strong><br>
+                    標高 1583 米的豐後富士，欣賞火山景觀。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">12:20 - 14:20 午餐與散步</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：湯布院町小鎮自由活動</strong><br>
+                    漫步街道，品嚐金賞可樂餅、Milch起司蛋糕與生乳捲。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=湯の坪街道+大分県由布市湯布院町" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟湯之坪街道導航</a>
+                </div>
+            </div>
+
+            <!-- D4 由布院午餐備案 -->
+            <div class="accordion" id="accD4Lunch">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD4Lunch">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD4Lunch">
+                            由布院午餐小吃備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD4Lunch" class="accordion-collapse collapse" data-bs-parent="#accD4Lunch">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>由布まぶし 心（金鱗湖本店）</strong><br>
+                                招牌豐後牛與地雞釜飯三吃。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=由布まぶし+心+金鱗湖本店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>由布院金賞コロッケ 本店</strong><br>
+                                外皮酥脆內餡飽滿的多汁可樂餅。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=由布院金賞コロッケ+本店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 20px;">
+                <div class="timeline-time">14:30 - 14:50</div>
+                <div class="timeline-text">
+                    <strong>金鱗湖（約 20 分鐘）</strong><br>
+                    欣賞清泉與溫泉交會的水氣景緻，水中鳥居拍照。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=金鱗湖+大分県由布市湯布院町" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟地圖導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">15:20 - 16:30</div>
+                <div class="timeline-text">
+                    <strong>別府海地獄 ＆ 灶地獄</strong><br>
+                    鈷藍色溫泉池與六種不同特色的泥漿蒸氣奇觀。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=海地獄+大分県別府市" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟海地獄導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=かまど地獄+大分県別府市" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟灶地獄導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">18:00 - 18:30</div>
+                <div class="timeline-text">
+                    <strong>返程：</strong>返抵博多站筑紫口前結束行程解散。
+                </div>
+            </div>
+        </div>
+
+        <!-- D4 晚間兩種方案 -->
+        <div class="spot-card">
+            <span class="spot-tag">EVENING CHOICES</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">方案一：留在博多站晚餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：焼鳥 鳥松（博多）</strong><br>
+                    博多在地炭火串燒老店。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=焼鳥+鳥松+福岡市博多区住吉" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟鳥松導航</a>
+                </div>
+            </div>
+
+            <!-- D4 方案一晚餐備案 -->
+            <div class="accordion" id="accD4HakataDinner">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD4HakataDinner">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD4HakataDinner">
+                            方案一（博多）周邊晚餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD4HakataDinner" class="accordion-collapse collapse" data-bs-parent="#accD4HakataDinner">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>九州焼肉 山田（博多/美野島）</strong><br>
+                                特選九州和牛燒肉專門店。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=九州焼肉+山田+福岡市博多区美野島" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>鮨 桃の木（博多）</strong><br>
+                                博多站周邊板前壽司料理。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鮨+桃の木+福岡市博多区博多駅東" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 24px;">
+                <div class="timeline-time">方案二：搭地鐵回天神晚餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：大衆焼肉 肉家（天神/大名）</strong><br>
+                    大名商圈平價黑毛和牛燒肉。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=大衆焼肉+肉家+福岡市中央区大名" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟肉家導航</a>
+                </div>
+            </div>
+
+            <!-- D4 方案二晚餐備案 -->
+            <div class="accordion" id="accD4TenjinDinner">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD4TenjinDinner">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD4TenjinDinner">
+                            方案二（天神）周邊晚餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD4TenjinDinner" class="accordion-collapse collapse" data-bs-parent="#accD4TenjinDinner">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>らーめん むさし（天神/舞鶴）</strong><br>
+                                天神豚骨拉麵。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=らーめん+むさし+福岡市中央区舞鶴" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>焼肉上（渡邊通）</strong><br>
+                                飯店附近高級黑毛和牛燒肉。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=焼肉上+福岡市中央区渡辺通" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div id="day7" class="day-content">
+        <div class="day-header">
+            <h2 class="day-title">Day 5：太宰府參拜與市區購物</h2>
+            <div class="day-subtitle">9 月 10 日 (四) ｜ 太宰府天滿宮 ➔ 午餐：MIDLE. ➔ 下午博多商場 ➔ 晚間自由安排</div>
+        </div>
+
+        <div class="info-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div class="hotel-header" style="color: var(--text-black); margin-bottom: 0;">晨間交通：飯店 ➔ 太宰府天滿宮</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=ベストウェスタンプラス福岡天神南&destination=太宰府天満宮&travelmode=transit" target="_blank" class="btn-map">
+                    <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                    路線導航
+                </a>
+            </div>
+            <div style="border: 1px solid var(--border-black); padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem; font-weight: 700;">
+                搭乘概況： 步行 7 分至西鐵天神站 ｜ 電車車程約 25–30 分 ｜ 費用 420 日圓
+            </div>
+            <div class="transit-row">
+                <div class="transit-icon nishitetsu">T01</div>
+                <div class="transit-line-nishitetsu"></div>
+                <div class="transit-station">
+                    <div class="station-name">西鐵福岡 (天神) 站</div>
+                    <div class="station-desc">搭乘 西鐵天神大牟田線（特急/急行）至「西鐵二日市站」同月台轉太宰府線</div>
+                </div>
+            </div>
+            <div class="transit-row">
+                <div class="transit-icon nishitetsu">D02</div>
+                <div class="transit-station">
+                    <div class="station-name">太宰府站</div>
+                    <div class="station-desc" style="color: var(--red); font-weight: bold;">出站即抵達太宰府表參道，步行前往天滿宮參拜</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spot-card">
+            <span class="spot-tag">MORNING & LUNCH：DAZAIFU</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">08:00 - 09:00 早餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：DACOMECCA（ダコメッカ 博多）</strong><br>
+                    炭火現烤香腸法棍、生甜甜圈與各式特色麵包。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=DACOMECCA+福岡市博多区博多駅前4-14-1" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 Dacomecca 導航</a>
+                </div>
+            </div>
+
+            <!-- D5 早餐備案 -->
+            <div class="accordion" id="accD5Breakfast">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD5Breakfast">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD5Breakfast">
+                            早餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD5Breakfast" class="accordion-collapse collapse" data-bs-parent="#accD5Breakfast">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>Bread, Espresso & Hakata &&</strong><br>
+                                博多口步行 4 分鐘，招牌現烤鐵板法式吐司。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Bread,+Espresso+&+Hakata+&&" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 20px;">
+                <div class="timeline-time">09:30 - 11:45</div>
+                <div class="timeline-text">
+                    <strong>太宰府天滿宮參拜與表參道散步</strong><br>
+                    摸撫御神牛祈求智慧，造訪隈研吾設計的星巴克，品嚐老字號「かさの家」現烤出爐的梅枝餅。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=太宰府天満宮" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟天滿宮導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=スターバックスコーヒー+太宰府天満宮表参道店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟星巴克導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=かさの家+太宰府市宰府2-7-24" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟かさの家導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">11:45 - 13:00 午餐</div>
+                <div class="timeline-text">
+                    <strong>主要選擇：MIDLE.（太宰府）</strong><br>
+                    太宰府站旁的人氣質感簡餐咖啡廳，提供美味的香料咖哩飯、熱壓三明治與手沖咖啡。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=MIDLE.+太宰府市宰府1-15-16" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 MIDLE. 導航</a>
+                </div>
+            </div>
+
+            <!-- D5 太宰府午餐備案 -->
+            <div class="accordion" id="accD5DazaifuLunch">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD5DazaifuLunch">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD5DazaifuLunch">
+                            太宰府午餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD5DazaifuLunch" class="accordion-collapse collapse" data-bs-parent="#accD5DazaifuLunch">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>ラーメン暖暮 太宰府駅前店</strong><br>
+                                太宰府站正門前的人氣九州豚骨拉麵。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=ラーメン暖暮+太宰府駅前店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="info-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div class="hotel-header" style="color: var(--text-black); margin-bottom: 0;">午後直達交通：太宰府 ➔ 博多車站</div>
+                <a href="https://www.google.com/maps/dir/?api=1&origin=太宰府駅&destination=博多バスターミナル&travelmode=transit" target="_blank" class="btn-map">
+                    <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                    路線導航
+                </a>
+            </div>
+            <div style="border: 1px solid var(--border-black); padding: 10px 14px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem; font-weight: 700;">
+                搭乘概況： 西鐵直達巴士「旅人號」 ｜ 直達免轉乘 ｜ 車程約 40 分 ｜ 費用 700 日圓
+            </div>
+            <div class="transit-row">
+                <div class="transit-icon bus">BUS</div>
+                <div class="transit-line-bus"></div>
+                <div class="transit-station">
+                    <div class="station-name">太宰府站前公車站</div>
+                    <div class="station-desc">搭乘 西鐵巴士「旅人號 (Liner)」，直達博多無需轉車</div>
+                </div>
+            </div>
+            <div class="transit-row">
+                <div class="transit-icon bus">BUS</div>
+                <div class="transit-station">
+                    <div class="station-name">博多巴士總站 (博多車站直通)</div>
+                    <div class="station-desc" style="color: var(--red); font-weight: bold;">下車直接連通 JR 博多城與各大商場開逛</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spot-card">
+            <span class="spot-tag">AFTERNOON & NIGHT</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">14:00 - 17:30</div>
+                <div class="timeline-text">
+                    <strong>博多車站連通商場購物 ＆ 下午茶</strong><br>
+                    連通逛 JR 博多城、阪急百貨與 KITTE 博多。<br>
+                    下午茶推薦在商場外帶 Imonne Hakata 地瓜甜點。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=JR博多シティ" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 JR 博多城導航</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=博多阪急" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟阪急百貨導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">17:30 起 晚間自由安排</div>
+                <div class="timeline-text">
+                    <strong>方案 A：留在博多商圈</strong><br>
+                    續逛 KITTE 博多，晚餐主要推薦 <strong>牛たん炭焼 利久 博多駅店</strong>。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=牛たん炭焼+利久+JR博多シティ店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟利久牛舌導航</a>
+                </div>
+            </div>
+
+            <!-- D5 博多晚餐備案 -->
+            <div class="accordion" id="accD5HakataDinner">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD5HakataDinner">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD5HakataDinner">
+                            方案 A（博多）周邊晚餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD5HakataDinner" class="accordion-collapse collapse" data-bs-parent="#accD5HakataDinner">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>鮨 桃の木（博多）</strong><br>
+                                博多站東板前握壽司料理。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=鮨+桃の木+福岡市博多区博多駅東" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item" style="margin-top: 24px;">
+                <div class="timeline-time">17:30 起 晚間自由安排</div>
+                <div class="timeline-text">
+                    <strong>方案 B：搭七隈線回天神商圈居酒屋</strong><br>
+                    主要選擇：<strong>大名 NUMBER SHOT</strong>。<br>
+                    <a href="https://www.google.com/maps/search/?api=1&query=NUMBER+SHOT+福岡市中央区大名1-12-36" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟 NUMBER SHOT 導航</a>
+                </div>
+            </div>
+
+            <!-- D5 天神晚餐備案 -->
+            <div class="accordion" id="accD5TenjinDinner">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingD5TenjinDinner">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseD5TenjinDinner">
+                            方案 B（天神）周邊晚餐備案推薦
+                        </button>
+                    </h2>
+                    <div id="collapseD5TenjinDinner" class="accordion-collapse collapse" data-bs-parent="#accD5TenjinDinner">
+                        <div class="accordion-body">
+                            <div class="alt-food-item">
+                                <strong>うなぎ処 福（春吉/天神）</strong><br>
+                                飯店附近的傳統現烤鰻魚料理。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=うなぎ処+福+福岡市中央区春吉3-16-1" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                            <div class="alt-food-item">
+                                <strong>焼とりの八兵衛 ソラリアプラザ店</strong><br>
+                                天神 Solaria Plaza 6 樓老字號炭火串燒。<br>
+                                <a href="https://www.google.com/maps/search/?api=1&query=焼とりの八兵衛+ソラリアプラザ店" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟導航</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div id="day8" class="day-content">
+        <div class="day-header">
+            <h2 class="day-title">Day 6：最後採買・搭機返台</h2>
+            <div class="day-subtitle">9 月 11 日 (五) ｜ 飯店退房 ➔ 福岡機場免稅店 ➔ 12:20 搭機返台</div>
+        </div>
+
+        <div class="spot-card">
+            <span class="spot-tag">DEPARTURE TIMELINE</span>
+
+            <div class="timeline-item">
+                <div class="timeline-time">08:30 - 09:15 早餐</div>
+                <div class="timeline-text">
+                    <strong>飯店退房與早餐</strong><br>
+                    辦理退房，於飯店周邊或咖啡店享用早餐。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">09:15 - 09:50 交通移動</div>
+                <div class="timeline-text">
+                    <strong>前往福岡機場國際線航廈</strong><br>
+                    • 方式 A：由天神南站搭乘七隈線至博多站，轉乘機場線至「福岡機場站」，再搭乘免費接駁巴士前往國際線航廈（約 35 分鐘）。<br>
+                    • 方式 B：由飯店直接搭乘計程車直達國際線航廈（車程約 15–20 分鐘，車資約 2,500–3,000 日圓）。<br>
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=ベストウェスタンプラス福岡天神南&destination=福岡空港+国際線旅客ターミナルビル&travelmode=transit" target="_blank" class="btn-map"><svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>開啟前往機場導航</a>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">09:50 - 11:40</div>
+                <div class="timeline-text">
+                    <strong>機場報到、出境與免稅店採買</strong><br>
+                    辦理行李託運手續並通過安檢，於出境免稅店採買福岡伴手禮（福砂屋長崎蛋糕、博多通饅頭、明太子仙貝）。
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-time">12:20 - 13:45</div>
+                <div class="timeline-text">
+                    <strong>搭機返台</strong><br>
+                    搭乘 BR105 班機，預計 13:45 抵達台灣桃園機場 T2。
+                </div>
+            </div>
+
+            <div class="meal-info">
+                <strong>推薦伴手禮：</strong>福砂屋長崎蛋糕、博多通饅頭 (通りもん)、福太郎明太子仙貝 (めんべい)
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Fukuoka Travel Guide.
+</footer>
+
+<script>
+    function switchDay(n) {
+        const items = document.querySelectorAll('.nav-item');
+        items.forEach((item, idx) => {
+            if (idx === (n - 1)) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+
+        const contents = document.querySelectorAll('.day-content');
+        contents.forEach(c => {
+            c.classList.remove('active');
+        });
+        
+        const target = document.getElementById('day' + n);
+        if (target) {
+            target.classList.add('active');
+        }
+
+        const heroHeight = document.querySelector('.hero').offsetHeight;
+        window.scrollTo({ top: heroHeight - 15, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
